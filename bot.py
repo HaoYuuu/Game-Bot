@@ -121,18 +121,8 @@ async def g1(ctx):
         msgs = await bot.wait_for('message', check=check)
         msg = msgs.content
         if not str(msg).upper().startswith("Y"):
+            await ctx.send("感謝遊玩:video_game:\n期待下次相遇:wave:")
             break
-
-
-@bot.command()
-async def say(ctx, *, msg):
-    await ctx.message.delete()
-    await ctx.send(msg)
-
-
-@bot.command()
-async def clean(ctx):
-    await ctx.channel.purge(limit=1)
 
 
 def printBoard(board):
@@ -296,29 +286,7 @@ async def g2(ctx):
         msgs = await bot.wait_for('message', check=check)
         msg = msgs.content
         if not str(msg).upper().startswith("Y"):
+            await ctx.send("感謝遊玩:video_game:\n期待下次相遇:wave:")
             break
-
-
-@bot.command()
-async def a(ctx):
-    await ctx.send(":seven::eight::nine:\n:four::five::six:\n:one::two::three:")
-    time.sleep(1)
-    await ctx.channel.purge(limit=1)
-    await ctx.send(":blue_square::blue_square::blue_square:\n"*3)
-
-
-@bot.command()
-async def aa(ctx):
-    await ctx.send(f"y or n")
-
-    def check(msg):
-        return msg.author == ctx.author and msg.channel == ctx.channel and \
-            msg.content.lower() in ["y", "n"]
-
-    msg = await bot.wait_for("message", check=check)
-    if msg.content.lower() == "y":
-        await ctx.send("You said yes!")
-    else:
-        await ctx.send("You said no!")
 
 bot.run(jdata['TAKEN'])
