@@ -11,7 +11,7 @@ with open('setting.json', 'r', encoding='utf8') as jfile:
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix='>', intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents)
 
 
 @bot.event
@@ -51,8 +51,17 @@ async def helps(ctx):
         name="Game bot", icon_url=jdata['pic_link'])
     embed.set_thumbnail(
         url=jdata['pic_link'])
-    embed.add_field(name="Game1 < 1A2B >", value="( 指令 : g1 )", inline=False)
-    embed.add_field(name="Game2 < 圈圈叉叉 >", value="( 指令 : g2 )", inline=False)
+    embed.add_field(name=":gear:指令說明", value="指令前墜:「.」  ", inline=True)
+    embed.add_field(name=":pushpin:指令列表(此指令)",
+                    value="( 指令 : helps )", inline=True)
+    embed.add_field(name="Game:one: < 1A2B >",
+                    value="( 指令 : g1 )", inline=False)
+    embed.add_field(name="Game:two: < 圈圈叉叉 >",
+                    value="( 指令 : g2 )", inline=False)
+    embed.add_field(name="Game:three: < 終極密碼 >",
+                    value="( 指令 : g3 )", inline=False)
+    embed.add_field(name="Game:four: < 猜拳 >",
+                    value="( 指令 : g4 )", inline=False)
     embed.set_footer(text="Have a good time !")
     await ctx.send(embed=embed)
 
@@ -83,8 +92,9 @@ async def g1(ctx):
     A = B = round = 0
     for i in range(4):
         answerList.append(list.pop(random.randint(0, 9-i)))
-    await ctx.send("<< 1A2B遊戲 >>")
+    await ctx.send("**<<  1A2B遊戲  >>**\n```規則 :「A」數字正確且位置正確\n      「B」數字正確但位置錯誤```")
     isPlaying = True
+
     while isPlaying:
         while A < 4:
             A = B = 0
@@ -113,7 +123,7 @@ async def g1(ctx):
 
             A, B = countAB(answerList, inputGuess(guessList, message))
             await ctx.send(f'結果:{A}A{B}B')
-        await ctx.send(f':confetti_ball: 恭喜答對 :confetti_ball:\n答案為"{message}"\n共花了{round}回合!')
+        await ctx.send(f':confetti_ball: **恭喜答對** :confetti_ball:\n**答案為"{message}"**\n**共花了{round}回合!**')
         await ctx.send("是否再玩一場?(yes/no)")
 
         def check(msgs):
@@ -121,7 +131,7 @@ async def g1(ctx):
         msgs = await bot.wait_for('message', check=check)
         msg = msgs.content
         if not str(msg).upper().startswith("Y"):
-            await ctx.send("感謝遊玩:video_game:\n期待下次相遇:wave:")
+            await ctx.send("**感謝遊玩**:video_game:\n**期待下次相遇**:wave:")
             break
 
 
@@ -210,12 +220,13 @@ def isBoardFull(board):
 
 @bot.command()
 async def g2(ctx):
-    await ctx.send("<< 圈圈叉叉 >>")
+    await ctx.send("**<< 圈圈叉叉 >>**\n```規則 : 率先連線者獲勝```")
     theNumberBoard = " ,:one:,:two:,:three:,:four:,:five:,:six:,:seven:,:eight:,:nine:".split(
         ",")
     round = 0
-    await ctx.send(printBoard(theNumberBoard))
+
     while True:
+        await ctx.send(printBoard(theNumberBoard))
         theBoard = [':blue_square:'] * 10
         letter = ''
         while not (letter == "O" or letter == "X"):
@@ -230,8 +241,8 @@ async def g2(ctx):
         turn = whoFirst(playerLetter)
         isPlaying = True
         await ctx.send("---------- START ----------")
-        while isPlaying:
 
+        while isPlaying:
             if turn == "player":
                 move = ''
                 times = 0
@@ -251,12 +262,12 @@ async def g2(ctx):
                     await ctx.channel.purge(limit=1)
                 if isWinner(theBoard, playerLetter):
                     await ctx.send(printBoard(theBoard))
-                    await ctx.send(":confetti_ball: 玩家獲勝 :confetti_ball:")
+                    await ctx.send(":confetti_ball: **玩家獲勝** :confetti_ball:")
                     isPlaying = False
                 else:
                     if isBoardFull(theBoard):
                         await ctx.send(printBoard(theBoard))
-                        await ctx.send(":scales: 平手 :scales:")
+                        await ctx.send(":scales: **平手** :scales:")
                         break
                     else:
                         await ctx.send(printBoard(theBoard))
@@ -269,12 +280,12 @@ async def g2(ctx):
                     await ctx.channel.purge(limit=1)
                 if isWinner(theBoard, computerLetter):
                     await ctx.send(printBoard(theBoard))
-                    await ctx.send(":wrench: bot獲勝 :wrench:")
+                    await ctx.send(":wrench: **bot獲勝** :wrench:")
                     isPlaying = False
                 else:
                     if isBoardFull(theBoard):
                         await ctx.send(printBoard(theBoard))
-                        await ctx.send(":scales: 平手 :scales:")
+                        await ctx.send(":scales: **平手** :scales:")
                         break
                     else:
                         await ctx.send(printBoard(theBoard))
@@ -286,7 +297,112 @@ async def g2(ctx):
         msgs = await bot.wait_for('message', check=check)
         msg = msgs.content
         if not str(msg).upper().startswith("Y"):
-            await ctx.send("感謝遊玩:video_game:\n期待下次相遇:wave:")
+            await ctx.send("**感謝遊玩**:video_game:\n**期待下次相遇**:wave:")
+            break
+
+
+@bot.command()
+async def g3(ctx):
+    await ctx.send("**<< 終極密碼(1~100) >>**\n```規則 : 由1到100猜測答案\n       範圍隨猜測漸漸縮小```")
+    number = {1: ":one:", 2: ":two:", 3: ":three:", 4: ":four:", 5: ":five:",
+              6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", 0: ":zero:", 10: ":one::zero:", }
+    isPlaying = True
+
+    while isPlaying:
+        answer = random.randint(1, 100)
+        min, max = 1, 100
+        guess = times = 0
+        while guess != answer:
+            times += 1
+            while True:
+                await ctx.send(f'--------第{times}次猜測--------')
+
+                def check(msgs):
+                    return msgs.author == ctx.author and msgs.channel == ctx.channel
+                msgs = await bot.wait_for('message', check=check)
+                guess = str(msgs.content)
+                if guess.isdigit():
+                    guess = int(guess)
+                    if not (guess < min or guess > max):
+                        break
+                    else:
+                        await ctx.send("(數字不在範圍中)")
+                else:
+                    await ctx.send("(請輸入數字)")
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'{number[guess//10]}{number[guess%10]}')
+            if guess != answer:
+                if guess >= min and guess < answer:
+                    min = guess + 1
+                if guess <= max and guess > answer:
+                    max = guess - 1
+                await ctx.send(f'範圍 : {number[min//10]}{number[min%10]} ~ {number[max//10]}{number[max%10]}')
+            else:
+                await ctx.send(f':confetti_ball: **猜中了** :confetti_ball:\n**(共猜了{times}次)**')
+        await ctx.send("是否再玩一場?(yes/no)")
+
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        msgs = await bot.wait_for('message', check=check)
+        msg = msgs.content
+        if not str(msg).upper().startswith("Y"):
+            await ctx.send("**感謝遊玩**:video_game:\n**期待下次相遇**:wave:")
+            break
+
+
+@bot.command()
+async def g4(ctx):
+    await ctx.send("**>> 猜拳遊戲 <<**\n```規則 : 剪刀=1 / 石頭=2 / 布=3\n       三戰兩勝```")
+    dict = {-1: ":v:", 0: ":fist:", 1: ":raised_hand:"}
+    isPlaying = True
+
+    while isPlaying:
+        times = win = lose = 0
+        while win < 2 and lose < 2:
+            while True:
+                await ctx.send("請出拳:")
+
+                def check(msgs):
+                    return msgs.author == ctx.author and msgs.channel == ctx.channel
+                msgs = await bot.wait_for('message', check=check)
+                player = str(msgs.content)
+                if player.isdigit():
+                    player = int(player)-2
+                    if player in [-1, 0, 1]:
+                        break
+                    else:
+                        await ctx.send("(輸入1~3)")
+                else:
+                    await ctx.send("(輸入1~3)")
+
+            computer = random.randint(-1, 1)
+            await ctx.channel.purge(limit=2)
+            await ctx.send(f'請出拳:{dict[player]}')
+
+            await ctx.send(f'第{times+1}場結果:{dict[player]} vs. {dict[computer]}')
+
+            if (player - computer == 1) or (player - computer == -2):
+                await ctx.send("(玩家獲勝:confetti_ball:)")
+                win += 1
+            if (player - computer == -1) or (player - computer == 2):
+                await ctx.send("(電腦獲勝:wrench:)")
+                lose += 1
+            if (player - computer == 0):
+                await ctx.send("(平手:scales:)")
+            await ctx.send(f'----- <目前比數> {win}:{lose} -----')
+            times += 1
+        if win > lose:
+            await ctx.send("**最終結果 : 玩家獲勝!!!**")
+        else:
+            await ctx.send("**最終結果 : 電腦獲勝!!!**")
+        await ctx.send("是否再玩一場?(yes/no)")
+
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        msgs = await bot.wait_for('message', check=check)
+        msg = msgs.content
+        if not str(msg).upper().startswith("Y"):
+            await ctx.send("**感謝遊玩**:video_game:\n**期待下次相遇**:wave:")
             break
 
 bot.run(jdata['TAKEN'])
