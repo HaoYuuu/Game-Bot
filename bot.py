@@ -88,7 +88,8 @@ async def g1(ctx):
                 await ctx.send(msgs.content)
                 if message.isdigit():
                     if len(message) == 4:
-                        if message.count(message[0]) == 1 and message.count(message[1]) == 1 and message.count(message[2]) == 1:
+                        if message.count(message[0]) == 1 and message.count(message[1]) == 1 \
+                                and message.count(message[2]) == 1:
                             break
                         else:
                             await ctx.send("(數字不能重複)")
