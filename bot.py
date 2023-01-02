@@ -2,7 +2,6 @@ import discord
 import json
 import random
 import datetime
-import time
 from discord.ext import commands
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
@@ -19,29 +18,6 @@ async def on_ready():
     print(">> Bot is online <<")
 
 
-@bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(int(jdata['Welcome_channel']))
-    await channel.send(f'{member} join!')
-
-
-@bot.event
-async def on_member_remove(member):
-    channel = bot.get_channel(int(jdata['Leave_channel']))
-    await channel.send(f'{member} leave!')
-
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f'{round(bot.latency*1000)} (ms)')
-
-
-@bot.command()
-async def pic(ctx):
-    pic = discord.File(jdata['pic'])
-    await ctx.send(file=pic)
-
-
 @bot.command()
 async def helps(ctx):
     embed = discord.Embed(title="Discord Game Bot",
@@ -51,9 +27,9 @@ async def helps(ctx):
         name="Game bot", icon_url=jdata['pic_link'])
     embed.set_thumbnail(
         url=jdata['pic_link'])
-    embed.add_field(name=":gear:指令說明", value="指令前墜:「.」  ", inline=True)
+    embed.add_field(name=":gear:指令說明", value="> 指令前墜:「.」", inline=True)
     embed.add_field(name=":pushpin:指令列表(此指令)",
-                    value="( 指令 : helps )", inline=True)
+                    value="> ( 指令 : helps )", inline=True)
     embed.add_field(name="Game:one: < 1A2B >",
                     value="( 指令 : g1 )", inline=False)
     embed.add_field(name="Game:two: < 圈圈叉叉 >",
@@ -123,7 +99,7 @@ async def g1(ctx):
 
             A, B = countAB(answerList, inputGuess(guessList, message))
             await ctx.send(f'結果:{A}A{B}B')
-        await ctx.send(f':confetti_ball: **恭喜答對** :confetti_ball:\n**答案為"{message}"**\n**共花了{round}回合!**')
+        await ctx.send(f'> :confetti_ball: **恭喜答對** :confetti_ball:\n> **答案為"{message}"**\n> **共花了{round}回合!**')
         await ctx.send("是否再玩一場?(yes/no)")
 
         def check(msgs):
@@ -262,12 +238,12 @@ async def g2(ctx):
                     await ctx.channel.purge(limit=1)
                 if isWinner(theBoard, playerLetter):
                     await ctx.send(printBoard(theBoard))
-                    await ctx.send(":confetti_ball: **玩家獲勝** :confetti_ball:")
+                    await ctx.send("> :confetti_ball: **玩家獲勝** :confetti_ball:")
                     isPlaying = False
                 else:
                     if isBoardFull(theBoard):
                         await ctx.send(printBoard(theBoard))
-                        await ctx.send(":scales: **平手** :scales:")
+                        await ctx.send("> :scales: **平手** :scales:")
                         break
                     else:
                         await ctx.send(printBoard(theBoard))
@@ -280,12 +256,12 @@ async def g2(ctx):
                     await ctx.channel.purge(limit=1)
                 if isWinner(theBoard, computerLetter):
                     await ctx.send(printBoard(theBoard))
-                    await ctx.send(":wrench: **bot獲勝** :wrench:")
+                    await ctx.send("> :wrench: **bot獲勝** :wrench:")
                     isPlaying = False
                 else:
                     if isBoardFull(theBoard):
                         await ctx.send(printBoard(theBoard))
-                        await ctx.send(":scales: **平手** :scales:")
+                        await ctx.send("> :scales: **平手** :scales:")
                         break
                     else:
                         await ctx.send(printBoard(theBoard))
@@ -338,7 +314,7 @@ async def g3(ctx):
                     max = guess - 1
                 await ctx.send(f'範圍 : {number[min//10]}{number[min%10]} ~ {number[max//10]}{number[max%10]}')
             else:
-                await ctx.send(f':confetti_ball: **猜中了** :confetti_ball:\n**(共猜了{times}次)**')
+                await ctx.send(f'> :confetti_ball: **猜中了** :confetti_ball:\n> **(共猜了{times}次)**')
         await ctx.send("是否再玩一場?(yes/no)")
 
         def check(msgs):
@@ -392,9 +368,9 @@ async def g4(ctx):
             await ctx.send(f'----- <目前比數> {win}:{lose} -----')
             times += 1
         if win > lose:
-            await ctx.send("**最終結果 : 玩家獲勝!!!**")
+            await ctx.send("> **最終結果 : 玩家獲勝!!!**")
         else:
-            await ctx.send("**最終結果 : 電腦獲勝!!!**")
+            await ctx.send("> **最終結果 : 電腦獲勝!!!**")
         await ctx.send("是否再玩一場?(yes/no)")
 
         def check(msgs):
