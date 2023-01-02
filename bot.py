@@ -100,7 +100,8 @@ async def g1(ctx):
 
             A, B = countAB(answerList, inputGuess(guessList, message))
             await ctx.send(f'結果:{A}A{B}B')
-        await ctx.send(f'> :confetti_ball: **恭喜答對** :confetti_ball:\n> **答案為"{message}"**\n> **共花了{round}回合!**')
+        await ctx.send(f'> :confetti_ball: **恭喜答對** :confetti_ball:\
+            \n> **答案為"{message}"**\n> **共花了{round}回合!**')
         await ctx.send("是否再玩一場?(yes/no)")
 
         def check(msgs):
