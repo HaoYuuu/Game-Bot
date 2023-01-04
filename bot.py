@@ -21,7 +21,7 @@ async def on_ready():
 @bot.command()
 async def helps(ctx):
     embed = discord.Embed(title="Discord Game Bot",
-                          description="producted by HaoYu",
+                          description="produced by HaoYu",
                           timestamp=datetime.datetime.now(tz=datetime.timezone(datetime.timedelta(hours=8))))
     embed.set_author(
         name="Game bot", icon_url=jdata['pic_link'])
