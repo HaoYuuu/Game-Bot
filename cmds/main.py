@@ -7,6 +7,7 @@ import datetime
 with open("setting.json", "r", encoding="utf8") as jfile:
     jdata = json.load(jfile)
 
+
 class Main(Cog_Extension):
 
     @commands.command()
