@@ -31,6 +31,7 @@ class Main(Cog_Extension):
                         value="( 指令 : g4 )", inline=False)
         embed.set_footer(text="Have a good time !")
         await ctx.send(embed=embed)
-
+   
+        
 async def setup(bot):
     await bot.add_cog(Main(bot))
