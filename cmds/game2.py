@@ -171,5 +171,6 @@ class Game2(Cog_Extension):
                 await ctx.send("**感謝遊玩**:video_game:\n**期待下次相遇**:wave:")
                 break
 
+
 async def setup(bot):
     await bot.add_cog(Game2(bot))
