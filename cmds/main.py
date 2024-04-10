@@ -14,7 +14,8 @@ class Main(Cog_Extension):
     async def helps(self, ctx):
         embed = discord.Embed(title="Discord Game Bot",
                             description="produced by HaoYu",
-                            timestamp=datetime.datetime.now(tz=datetime.timezone(datetime.timedelta(hours=8))))
+                            timestamp=datetime.datetime\
+                            .now(tz=datetime.timezone(datetime.timedelta(hours=8))))
         embed.set_author(
             name="Game bot", icon_url=jdata['pic'])
         embed.set_thumbnail(
