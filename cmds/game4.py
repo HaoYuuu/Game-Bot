@@ -2,13 +2,23 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
+import json
+
+with open("setting.json", "r", encoding="utf8") as jfile:
+    jdata = json.load(jfile)
 
 
 class Game4(Cog_Extension):
 
     @commands.command()
     async def g4(self, ctx):
-        await ctx.send("**>> 猜拳遊戲 <<**\n```規則 : 剪刀=1 / 石頭=2 / 布=3\n       三戰兩勝```")
+
+
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        
+
+        await ctx.send(jdata["rule4"])
         dict = {-1: ":v:", 0: ":fist:", 1: ":raised_hand:"}
         isPlaying = True
 
@@ -17,9 +27,6 @@ class Game4(Cog_Extension):
             while win < 2 and lose < 2:
                 while True:
                     await ctx.send("請出拳:")
-
-                    def check(msgs):
-                        return msgs.author == ctx.author and msgs.channel == ctx.channel
                     msgs = await self.bot.wait_for('message', check=check)
                     player = str(msgs.content)
                     if player.isdigit():
@@ -52,9 +59,6 @@ class Game4(Cog_Extension):
             else:
                 await ctx.send("> **最終結果 : 電腦獲勝!!!**")
             await ctx.send("是否再玩一場?(yes/no)")
-
-            def check(msgs):
-                return msgs.author == ctx.author and msgs.channel == ctx.channel
             msgs = await self.bot.wait_for('message', check=check)
             msg = msgs.content
             if not str(msg).upper().startswith("Y"):
