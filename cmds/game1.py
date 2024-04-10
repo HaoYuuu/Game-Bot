@@ -2,6 +2,10 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
+import json
+
+with open("setting.json", "r", encoding="utf8") as jfile:
+    jdata = json.load(jfile)
 
 
 def inputGuess(guessList, message):
@@ -26,13 +30,19 @@ class Game1(Cog_Extension):
 
     @commands.command()
     async def g1(self, ctx):
+
+        
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        
+
         list = "0 1 2 3 4 5 6 7 8 9".split(" ")
         answerList = []
         guessList = [0, 0, 0, 0]
         A = B = round = 0
         for i in range(4):
             answerList.append(list.pop(random.randint(0, 9-i)))
-        await ctx.send("**<<  1A2B遊戲  >>**\n```規則 :「A」數字正確且位置正確\n      「B」數字正確但位置錯誤```")
+        await ctx.send(jdata["rule1"])
         isPlaying = True
 
         while isPlaying:
@@ -43,9 +53,6 @@ class Game1(Cog_Extension):
 
                 while True:
                     await ctx.send("請輸入答案:")
-
-                    def check(msgs):
-                        return msgs.author == ctx.author and msgs.channel == ctx.channel
                     msgs = await self.bot.wait_for('message', check=check)
                     message = msgs.content
                     await ctx.channel.purge(limit=1)
@@ -67,9 +74,6 @@ class Game1(Cog_Extension):
             await ctx.send(f'> :confetti_ball: **恭喜答對** :confetti_ball:\
                 \n> **答案為"{message}"**\n> **共花了{round}回合!**')
             await ctx.send("是否再玩一場?(yes/no)")
-
-            def check(msgs):
-                return msgs.author == ctx.author and msgs.channel == ctx.channel
             msgs = await self.bot.wait_for('message', check=check)
             msg = msgs.content
             if not str(msg).upper().startswith("Y"):
