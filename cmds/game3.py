@@ -2,15 +2,27 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
+import json
+
+with open("setting.json", "r", encoding="utf8") as jfile:
+    jdata = json.load(jfile)
 
 
 class Game3(Cog_Extension):
 
     @commands.command()
     async def g3(self, ctx):
-        await ctx.send("**<< 終極密碼(1~100) >>**\n```規則 : 由1到100猜測答案\n       範圍隨猜測漸漸縮小```")
-        number = {1: ":one:", 2: ":two:", 3: ":three:", 4: ":four:", 5: ":five:",
-                6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", 0: ":zero:", 10: ":one::zero:", }
+
+
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        
+
+        await ctx.send(jdata["rule3"])
+        number = {1: ":one:", 2: ":two:", 3: ":three:", \
+                  4: ":four:", 5: ":five:", 6: ":six:", \
+                  7: ":seven:", 8: ":eight:", 9: ":nine:", \
+                  0: ":zero:", 10: ":one::zero:", }
         isPlaying = True
 
         while isPlaying:
@@ -21,9 +33,6 @@ class Game3(Cog_Extension):
                 times += 1
                 while True:
                     await ctx.send(f'--------第{times}次猜測--------')
-
-                    def check(msgs):
-                        return msgs.author == ctx.author and msgs.channel == ctx.channel
                     msgs = await self.bot.wait_for('message', check=check)
                     guess = str(msgs.content)
                     if guess.isdigit():
@@ -45,9 +54,6 @@ class Game3(Cog_Extension):
                 else:
                     await ctx.send(f'> :confetti_ball: **猜中了** :confetti_ball:\n> **(共猜了{times}次)**')
             await ctx.send("是否再玩一場?(yes/no)")
-
-            def check(msgs):
-                return msgs.author == ctx.author and msgs.channel == ctx.channel
             msgs = await self.bot.wait_for('message', check=check)
             msg = msgs.content
             if not str(msg).upper().startswith("Y"):
