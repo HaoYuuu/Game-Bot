@@ -2,6 +2,10 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
+import json
+
+with open("setting.json", "r", encoding="utf8") as jfile:
+    jdata = json.load(jfile)
 
 
 def printBoard(board):
@@ -91,9 +95,15 @@ class Game2(Cog_Extension):
 
     @commands.command()
     async def g2(self, ctx):
-        await ctx.send("**<< 圈圈叉叉 >>**\n```規則 : 率先連線者獲勝```")
-        theNumberBoard = " ,:one:,:two:,:three:,:four:,:five:,:six:,:seven:,:eight:,:nine:".split(
-            ",")
+
+        
+        def check(msgs):
+            return msgs.author == ctx.author and msgs.channel == ctx.channel
+        
+
+        await ctx.send(jdata["rule2"])
+        theNumberBoard = " ,:one:,:two:,:three:,:four:,:five:,:six:,\
+        :seven:,:eight:,:nine:".split(",")
         round = 0
 
         while True:
@@ -102,9 +112,6 @@ class Game2(Cog_Extension):
             letter = ''
             while not (letter == "O" or letter == "X"):
                 await ctx.send("選擇O/X (X為先手) :")
-
-                def check(msgs):
-                    return msgs.author == ctx.author and msgs.channel == ctx.channel
                 msgs = await self.bot.wait_for('message', check=check)
                 msg = msgs.content
                 letter = str(msg).upper()
@@ -119,9 +126,6 @@ class Game2(Cog_Extension):
                     times = 0
                     while move not in "1 2 3 4 5 6 7 8 9".split(" ") or not isSpaceEmpty(theBoard, int(move)):
                         await ctx.send("選擇移動位置(1~9):")
-
-                        def check(msgs):
-                            return msgs.author == ctx.author and msgs.channel == ctx.channel
                         msgs = await self.bot.wait_for('message', check=check)
                         msg = msgs.content
                         move = str(msg)
@@ -162,9 +166,6 @@ class Game2(Cog_Extension):
                             await ctx.send(printBoard(theBoard))
                             turn = "player"
             await ctx.send("是否再玩一場?(yes/no)")
-
-            def check(msgs):
-                return msgs.author == ctx.author and msgs.channel == ctx.channel
             msgs = await self.bot.wait_for('message', check=check)
             msg = msgs.content
             if not str(msg).upper().startswith("Y"):
