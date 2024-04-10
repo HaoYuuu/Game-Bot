@@ -1,4 +1,8 @@
 {
     "TOKEN": "MTAxNjcxNTExODQxNzAyMzAxNw.G1_Blq.LcYgyrSm0v4pgqunDroiFBudVomvR_51wON_4I",
-    "pic": "https://img.jollybuy.com/S190131133210195/brand/a918501cee504eb88c41e7ecffa841b5.png"
+    "pic": "https://img.jollybuy.com/S190131133210195/brand/a918501cee504eb88c41e7ecffa841b5.png",
+    "rule1": "**<<  1A2B遊戲  >>**\n```規則 :「A」數字正確且位置正確\n      「B」數字正確但位置錯誤```",
+    "rule2": "**<< 圈圈叉叉 >>**\n```規則 : 率先連線者獲勝```",
+    "rule3": "**<< 終極密碼(1~100) >>**\n```規則 : 由1到100猜測答案\n       範圍隨猜測漸漸縮小```",
+    "rule4": "**>> 猜拳遊戲 <<**\n```規則 : 剪刀=1 / 石頭=2 / 布=3\n       三戰兩勝```"
 }
